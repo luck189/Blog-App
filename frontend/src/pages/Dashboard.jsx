@@ -12,10 +12,11 @@ const Dashboard = () => {
     image: null,
   });
   const [blogs, setBlogs] = useState([]);
+
   const onChangeHandler = (e) => {
-    console.log(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const fileHandler = (e) => {
     setFormData({ ...formData, image: e.target.files[0] });
   };
@@ -28,10 +29,11 @@ const Dashboard = () => {
     data.append("category", formData.category);
     data.append("description", formData.description);
     data.append("image", formData.image);
+
     try {
       const res = await axios.post(
         "http://localhost:4000/blog/create",
-        formData,
+        data,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -39,26 +41,25 @@ const Dashboard = () => {
           },
         }
       );
-      console.log("res", res);
       toast.success(res.data.message);
-      (formData.title = ""),
-        (formData.category = ""),
-        (formData.description = ""),
-        (formData.image = null);
+      
+      // FIX: Proper immutable state resetting instead of direct property mutations
+      setFormData({
+        title: "",
+        category: "",
+        description: "",
+        image: null,
+      });
     } catch (error) {
-      toast.error(error.message);
+      const errMsg = error.response?.data?.message || error.message;
+      toast.error(errMsg);
     }
   };
 
   useEffect(() => {
     const allBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/blog/all", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const res = await axios.get("http://localhost:4000/blog/all");
         setBlogs(res.data.blogs);
       } catch (error) {
         console.log("error", error);
@@ -80,16 +81,19 @@ const Dashboard = () => {
       toast.success(res.data.message);
       setBlogs(blogs.filter((blog) => blog._id !== blogId));
     } catch (error) {
-      toast.error(error.response.data.message);
+      // FIX: Added optional chaining to prevent server disconnect/network crashes
+      const errMsg = error.response?.data?.message || error.message;
+      toast.error(errMsg);
     }
   };
+
   return (
     <div className="flex h-auto">
       {/* side bar */}
-      <div className="w-64 border-1 border-gray-300  text-white p-6">
+      <div className="w-64 border-r border-gray-300 p-6">
         <h2 className="text-lg font-semibold mb-6 text-black">Dashboard</h2>
         <button
-          className={`w-full text-left py-2 px-4 mb-2 rounded ${
+          className={`w-full text-left py-2 px-4 mb-2 rounded text-white font-medium cursor-pointer ${
             activeTab === "post" ? "bg-orange-500" : "bg-gray-700"
           }`}
           onClick={() => setActiveTab("post")}
@@ -97,7 +101,7 @@ const Dashboard = () => {
           Post a Blog
         </button>
         <button
-          className={`w-full text-left py-2 px-4 rounded ${
+          className={`w-full text-left py-2 px-4 rounded text-white font-medium cursor-pointer ${
             activeTab === "list" ? "bg-orange-500" : "bg-gray-700"
           }`}
           onClick={() => setActiveTab("list")}
@@ -111,10 +115,7 @@ const Dashboard = () => {
           <div>
             <h2 className="text-xl font-bold">Post a new blog</h2>
             <div className="mt-8">
-              <form
-                onSubmit={submitHandler}
-                className="w-1/2 flex flex-col gap-3"
-              >
+              <form onSubmit={submitHandler} className="w-1/2 flex flex-col gap-3">
                 <input
                   name="title"
                   value={formData.title}
@@ -122,6 +123,7 @@ const Dashboard = () => {
                   type="text"
                   placeholder="Title"
                   className="border border-gray-300 rounded-md p-2 outline-none w-full"
+                  required
                 />
                 <input
                   name="category"
@@ -130,26 +132,30 @@ const Dashboard = () => {
                   type="text"
                   placeholder="Category"
                   className="border border-gray-300 rounded-md p-2 outline-none w-full"
+                  required
                 />
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={onChangeHandler}
-                  type="text"
                   placeholder="Description"
-                  className="border border-gray-300 rounded-md p-2 outline-none w-full"
+                  className="border border-gray-300 rounded-md p-2 outline-none w-full min-h-[120px]"
+                  required
                 />
 
                 <div>
-                  <label htmlFor="">Choose Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Choose Image</label>
                   <input
+                    // FIX: Key automatically clears the input's visual "filename string" on submission reset
+                    key={formData.image ? "selected" : "empty"}
                     onChange={fileHandler}
                     type="file"
                     accept="image/*"
                     className="border border-gray-300 rounded-md p-2 outline-none w-full"
+                    required
                   />
                 </div>
-                <button className="bg-black text-white w-full rounded-full border-none cursor-pointer py-2">
+                <button type="submit" className="bg-black text-white w-full rounded-full border-none cursor-pointer py-2 mt-2 font-semibold">
                   Post Blog
                 </button>
               </form>
@@ -171,17 +177,17 @@ const Dashboard = () => {
                 <tbody>
                   {blogs.map((blog) => (
                     <tr key={blog._id} className="text-center">
-                      <td className="border px-4 py-2">{blog.title}</td>
-                      <td className="border px-4 py-2">{blog.category}</td>
+                      <td className="border px-4 py-2 font-medium">{blog.title}</td>
+                      <td className="border px-4 py-2 text-gray-600">{blog.category}</td>
                       <td className="border px-4 py-2">
                         <img
                           src={`http://localhost:4000/images/${blog.image}`}
                           alt={blog.title}
-                          className="w-16 h-16 object-cover mx-auto"
+                          className="w-16 h-16 object-cover mx-auto rounded"
                         />
                       </td>
                       <td
-                        className="border px-4 py-2 cursor-pointer"
+                        className="border px-4 py-2 cursor-pointer text-red-600 font-bold hover:text-red-800"
                         onClick={() => removeBlog(blog._id)}
                       >
                         X
@@ -197,4 +203,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;

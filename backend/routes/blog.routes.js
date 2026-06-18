@@ -6,10 +6,15 @@ import {
   createBlog,
   deleteBlog,
   userBlogs,
+  singleBlog, // Imported missing handler
 } from "../controllers/blog.controller.js";
+
 const router = express.Router();
+
 router.post("/create", isAuthenticated, upload.single("image"), createBlog);
 router.get("/all", allBlogs);
+router.get("/:id", singleBlog); // Exposed functional route handler endpoint
 router.delete("/delete/:id", isAuthenticated, deleteBlog);
 router.get("/user/blogs", isAuthenticated, userBlogs);
+
 export default router;

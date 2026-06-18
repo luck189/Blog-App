@@ -8,33 +8,35 @@ const SingleBlog = () => {
   const blog = blogData.find((b) => b._id === id);
   
   return (
-    blog && 
-    <div className="rounded-md border-1 border-gray-200 p-5 max-w-3xl flex flex-col gap-3 items-center justify-center mx-auto py-8">
-      <img
-        className="transition-transform duration-300 hover:scale-105"
-        src={`http://localhost:4000/images/${blog.image}`}
-        alt=""
-      />
-      <p className="text-2cl font-bold">{blog.title}</p>
-      <p className="text-[#4B6BFB]">{blog.category}</p>
-      <p>{blog.description}</p>
-      <div className="flex gap-2 items-center justify-center">
-        <p className="text-lg font-bold">Author:{blog.author.name}</p>
+    blog && (
+      <div className="rounded-md border border-gray-200 p-5 max-w-3xl flex flex-col gap-3 items-center justify-center mx-auto py-8">
         <img
-          className="w-8 h-8 rounded-full"
-          src={`http://localhost:4000/images/${blog.author.image}`}
+          className="transition-transform duration-300 hover:scale-105 rounded-md"
+          src={`http://localhost:4000/images/${blog.image}`}
           alt=""
         />
+        {/* FIX: Changed invalid text-2cl class to text-2xl */}
+        <p className="text-2xl font-bold text-gray-800">{blog.title}</p>
+        <p className="text-[#4B6BFB] font-semibold">{blog.category}</p>
+        <p className="text-gray-700 leading-relaxed text-center">{blog.description}</p>
+        <div className="flex gap-2 items-center justify-center my-2">
+          <p className="text-lg font-bold text-gray-600">Author: {blog.author.name}</p>
+          <img
+            className="w-8 h-8 rounded-full object-cover"
+            src={`http://localhost:4000/images/${blog.author.image}`}
+            alt=""
+          />
+        </div>
+        <p className="text-sm text-gray-500">
+          {new Date(blog.createdAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "2-digit",
+            year: "numeric",
+          })}
+        </p>
       </div>
-      <p>
-        {" "}
-        {new Date(blog.createdAt).toLocaleDateString("en-US", {
-          month: "long",
-          day: "2-digit",
-          year: "numeric",
-        })}
-      </p>
-    </div>
+    )
   );
 };
+
 export default SingleBlog;
