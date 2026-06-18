@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { StoreContext } from "../context/StoreContext";
-
+const BACKEND_URL = "https://codecanvas-backend.vercel.app"
 const SingleBlog = () => {
   const { id } = useParams();
   const { blogData } = useContext(StoreContext);
@@ -12,7 +12,7 @@ const SingleBlog = () => {
       <div className="rounded-md border border-gray-200 p-5 max-w-3xl flex flex-col gap-3 items-center justify-center mx-auto py-8">
         <img
           className="transition-transform duration-300 hover:scale-105 rounded-md"
-          src={`http://localhost:4000/images/${blog.image}`}
+          src={`${BACKEND_URL}/images/${blog.image}`}
           alt=""
         />
         {/* FIX: Changed invalid text-2cl class to text-2xl */}
@@ -23,7 +23,7 @@ const SingleBlog = () => {
           <p className="text-lg font-bold text-gray-600">Author: {blog.author.name}</p>
           <img
             className="w-8 h-8 rounded-full object-cover"
-            src={`http://localhost:4000/images/${blog.author.image}`}
+            src={`${BACKEND_URL}/images/${blog.author.image}`}
             alt=""
           />
         </div>

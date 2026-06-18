@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
+const BACKEND_URL = "https://codecanvas-backend.vercel.app"
+
 // 1. Create and export the context directly in this file
 export const StoreContext = createContext(null);
 
@@ -24,7 +26,7 @@ const StoreContextProvider = ({ children }) => {
   useEffect(() => {
     const allBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/blog/all");
+        const res = await axios.get(`${BACKEND_URL}/blog/all`);
         setBlogData(res.data.blogs);
       } catch (error) {
         console.log("error in all blogs api", error);

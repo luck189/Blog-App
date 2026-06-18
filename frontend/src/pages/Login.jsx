@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { StoreContext } from "../context/StoreContext";
-
+const BACKEND_URL = "https://codecanvas-backend.vercel.app"
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -30,7 +30,7 @@ const Login = () => {
       };
 
       const res = await axios.post(
-        "http://localhost:4000/user/login",
+        `${BACKEND_URL}/user/login`,
         loginData
       );
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
+const BACKEND_URL = "https://codecanvas-backend.vercel.app"
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("list");
   const token = localStorage.getItem("token");
@@ -32,7 +32,7 @@ const Dashboard = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/blog/create",
+        `${BACKEND_URL}/blog/create`,
         data,
         {
           headers: {
@@ -59,7 +59,7 @@ const Dashboard = () => {
   useEffect(() => {
     const allBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/blog/all");
+        const res = await axios.get(`${BACKEND_URL}/blog/all`);
         setBlogs(res.data.blogs);
       } catch (error) {
         console.log("error", error);
@@ -71,7 +71,7 @@ const Dashboard = () => {
   const removeBlog = async (blogId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:4000/blog/delete/${blogId}`,
+        `${BACKEND_URL}/blog/delete/${blogId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -181,7 +181,7 @@ const Dashboard = () => {
                       <td className="border px-4 py-2 text-gray-600">{blog.category}</td>
                       <td className="border px-4 py-2">
                         <img
-                          src={`http://localhost:4000/images/${blog.image}`}
+                          src={`${BACKEND_URL}/images/${blog.image}`}
                           alt={blog.title}
                           className="w-16 h-16 object-cover mx-auto rounded"
                         />

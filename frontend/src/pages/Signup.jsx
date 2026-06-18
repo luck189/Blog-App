@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+const BACKEND_URL = "https://codecanvas-backend.vercel.app"
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -37,7 +37,7 @@ const Signup = () => {
       // When passing a raw FormData instance, Axios automatically applies 
       // 'multipart/form-data' along with the correct multi-part boundary string.
       const res = await axios.post(
-        "http://localhost:4000/user/register",
+        `${BACKEND_URL}/user/register`,
         data
       );
 
