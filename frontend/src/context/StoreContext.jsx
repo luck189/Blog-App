@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { StoreContext } from "./StoreContextInstance";
+
+// 1. Create and export the context directly in this file
+export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
   // Initialize state directly to avoid multi-pass rendering issues
