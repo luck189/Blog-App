@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { StoreContext } from "../context/StoreContext";
+import user from "../assets/user.png";
 const BACKEND_URL = "https://codecanvas-backend.vercel.app"
 const SingleBlog = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const SingleBlog = () => {
           <p className="text-lg font-bold text-gray-600">Author: {blog.author.name}</p>
           <img
             className="w-8 h-8 rounded-full object-cover"
-            src="../../assets/user.png"
+            src={user}
             alt=""
           />
         </div>
