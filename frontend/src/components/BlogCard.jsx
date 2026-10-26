@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 const BACKEND_URL = "https://codecanvas-backend.vercel.app"
+import userImage from "../assets/user.png";
+import blogging from "../assets/blogging.png";
 
 const BlogCard = ({
   id,
@@ -15,7 +17,7 @@ const BlogCard = ({
       <div>
         <Link to={`/blog/${id}`} className="overflow-hidden block rounded-md mb-3">
           <img
-            src={`${BACKEND_URL}/images/${image}`}
+            src={blogging}
             alt={title}
             className="w-full h-48 object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
           />
@@ -29,7 +31,7 @@ const BlogCard = ({
       <div className="flex gap-3 items-center mt-4 pt-3 border-t border-gray-100">
         <img
           className="w-8 h-8 rounded-full object-cover"
-          src={`${BACKEND_URL}/images/${author_image}`}
+          src={userImage}
           alt={author_name}
         />
         <div className="flex flex-col text-xs text-gray-500">

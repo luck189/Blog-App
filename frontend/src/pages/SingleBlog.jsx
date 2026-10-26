@@ -23,7 +23,7 @@ const SingleBlog = () => {
           <p className="text-lg font-bold text-gray-600">Author: {blog.author.name}</p>
           <img
             className="w-8 h-8 rounded-full object-cover"
-            src={`${BACKEND_URL}/images/${blog.author.image}`}
+            src="../../assets/user.png"
             alt=""
           />
         </div>

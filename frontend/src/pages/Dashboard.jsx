@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 const BACKEND_URL = "https://codecanvas-backend.vercel.app"
+import blogging from "../assets/blogging.png";
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("list");
   const token = localStorage.getItem("token");
@@ -181,7 +183,7 @@ const Dashboard = () => {
                       <td className="border px-4 py-2 text-gray-600">{blog.category}</td>
                       <td className="border px-4 py-2">
                         <img
-                          src={`${BACKEND_URL}/images/${blog.image}`}
+                          src={blogging}
                           alt={blog.title}
                           className="w-16 h-16 object-cover mx-auto rounded"
                         />
